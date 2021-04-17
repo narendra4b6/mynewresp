@@ -1,0 +1,42 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+{% block body_block %}
+<div class="container">
+<div class="jumbotron">
+
+<h1>{{post.title}}</h1>
+{% if post.picture %}
+<img src="{{post.picture.url}}" height=400px width=60%>
+{% endif %}
+<br/><br/><h6>{{post.text|safe|linebreaksbr}}</h6>
+{% if post.publish_date %}
+<h5>{{post.publish_date}}</h5>
+{% else %}
+<a href="{% url 'post_publish' pk=post.pk %}" class="btn btn-secondary">Publish</a>
+{% endif %}
+
+{% if user.is_authenticated %}
+<a href="{% url 'post_edit' pk=post.pk %}" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+<a onClick="return confirm('Are You Sure Want to Delete')" href="{% url 'post_delete' pk=post.pk %}" class="btn btn-danger"><i class="fa fa-remove" aria-hidden="true"></i></a>
+{% endif %}
+<br/><br/>
+{% for comment in post.comments.all %}
+{% if user.is_authenticated or comment.approve_comments %}
+<h3>{{comment.author}}</h3>
+<h6>{{comment.text|safe|linebreaksbr}}</h6>
+<h6>{{comment.create_date}}</h6>
+{% if not comment.approve_comments %}
+<a href="{% url 'comment_approve' pk=comment.pk %}" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i></a>
+<a href="{% url 'comment_delete' pk=comment.pk %}" class="btn btn-danger"><i class="fa fa-remove" aria-hidden="true"></i></a>
+{% endif %}
+{% endif %}
+{% empty %}
+<h6>No Comments</h6>
+{% endfor %}
+<br/><br/>
+<a href="{% url 'post_comment' pk=post.pk %}" class="btn btn-primary">AddComment</a>
+</div>
+</div>
+{% endblock %}
+{% block content %}
+{% endblock %}

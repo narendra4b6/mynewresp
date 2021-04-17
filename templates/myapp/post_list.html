@@ -1,0 +1,28 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+{% block body_block %}
+<div class="container">
+<div class="jumbotron">
+<form>
+<input type="text" name="q" placehoder="Search Posts">&nbsp;&nbsp;<input type="submit" class="btn btn-success" value="search">
+</form>
+{% for post in posts %}
+<h1><a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a></h1>
+<h3>Posted On:{{post.publish_date}}</h3>
+<h6><a href="{% url 'post_detail' pk=post.pk %}">Comments:{{post.approve_comments.count}}</a></h6>
+{% endfor %}
+<ul class="pagination">
+{% if posts.has_previous %}
+<a href="?page=1" class="btn btn-primary"><<</a>
+<a href="?page={{posts.previous_page_number}}" class="btn btn-danger"><</a>
+{% endif %}
+{% if posts.has_next %}
+<a href="?page={{posts.next_page_number}}" class="btn btn-danger">></a>
+<a href="?page={{posts.paginator.num_pages}}" class="btn btn-primary">>></a>
+{% endif %}
+</ul>
+</div>
+</div>
+{% endblock %}
+{% block content %}
+{% endblock %}

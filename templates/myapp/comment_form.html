@@ -1,0 +1,21 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+{% block body_block %}
+<div class="container">
+<div class="jumbotron">
+  {% if messages %}
+  {% for msg in messages %}
+  <h5 class="text-green">{{msg}}</h5>
+  {% endfor %}
+  {% endif %}
+<h2>Add Your Comment</h2>
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+{{form.as_p}}
+<input type="submit" value="save" class="btn btn-success">
+</form>
+</div>
+</div>
+{% endblock %}
+{% block content %}
+{% endblock %}
